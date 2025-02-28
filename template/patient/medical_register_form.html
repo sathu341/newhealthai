@@ -1,0 +1,33 @@
+{% extends 'C:\2024project_AI\healthai\template\patient\dashboard.html' %}
+{% load static %}
+   {% block title %} Disease Prediction with AI {% endblock %}
+   {% block content%}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Medical Registration</h2>
+        <form method="post" enctype="multipart/form-data" action="{% url 'register_medical' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="patient" class="form-label">Patient</label>
+                <select class="form-select" id="patient" name="patient" required>
+                    {% for patient in patients %}
+                        <option value="{{ patient.id }}">{{ patient.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="diagnosis" class="form-label">Diagnosis</label>
+                <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="treatment" class="form-label">Treatment</label>
+                <textarea class="form-control" id="treatment" name="treatment" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="reports" class="form-label">Upload Reports</label>
+                <input type="file" class="form-control" id="reports" name="reports" multiple>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+    </div>
+    {% endblock %}
+

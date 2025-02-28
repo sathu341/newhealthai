@@ -1,0 +1,47 @@
+{% extends 'C:\2024project_AI\healthai\template\patient\dashboard.html' %}
+{% load static %}
+   {% block title %} Disease Prediction with AI {% endblock %}
+   {% block content%}
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Upload Medical Report&nbsp;{{message}}</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Patient Selection -->
+                    <div class="mb-3">
+                        <label for="patient" class="form-label">Patient</label>
+                        <select class="form-select" id="patient" name="patient" required>
+                            <option value="" disabled selected>Select a patient</option>
+                            {% for patient in patients %}
+                                <option value="{{ patient.id }}">{{ patient.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Doctor Selection -->
+                    <div class="mb-3">
+                        <label for="doctor" class="form-label">Doctor</label>
+                        <select class="form-select" id="doctor" name="doctor" required>
+                            <option value="" disabled selected>Select a doctor</option>
+                            {% for doctor in doctors %}
+                                <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="mb-3">
+                        <label for="uploadfile" class="form-label">Upload File</label>
+                        <input type="file" class="form-control" id="uploadfile" name="uploadfile" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-success w-100">Upload Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

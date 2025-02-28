@@ -1,0 +1,30 @@
+{% extends 'C:\2024project_AI\healthai\template\patient\dashboard.html' %}
+{% load static %}
+   {% block title %} Disease Prediction with AI {% endblock %}
+   {% block content%}
+    <div class="container mt-4">
+        <h1>Symptom Diagnosis</h1>
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="patient_name" class="form-label" >Patient Name</label>
+                <input type="text" name="patient_name" id="patient_name" class="form-control" value="{{username}}" required>
+                <button type="submit" class="btn btn-primary mt-3">Predict Disease</button>
+            </div>
+            <div class="row">
+                {% for symptom in symptoms %}
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="{{ symptom }}" id="{{ symptom }}" value="1">
+                            <label class="form-check-label" for="{{ symptom }}">{{ symptom }}</label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+           
+        </form>
+    </div>
+{% endblock %}

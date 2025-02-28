@@ -1,0 +1,41 @@
+*{
+    margin:0;
+    box-sizing: border-box;
+}
+
+.subheader{
+    width:100%;
+    border-bottom: 1px solid lightgrey;
+    padding:10px;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+}
+.header{
+    width:100%;
+    border-bottom: 1px solid lightgrey;
+    padding:10px;
+    height: 40px;
+    display: flex;
+    justify-content: space-evenly;
+    position: fixed;
+    background-color: transparent;
+    z-index:99999;
+}
+.items{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.naves{
+    display: flex;
+    gap:10px;
+
+
+}
+.naves p a{
+    text-decoration: none;
+    text-align: center;
+    color:rgb(98, 103, 101);
+}

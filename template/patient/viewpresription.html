@@ -1,0 +1,32 @@
+{% extends 'C:\2024project_AI\healthai\template\patient\dashboard.html' %}
+{% load static %}
+   {% block title %} Disease Prediction with AI {% endblock %}
+   {% block content%}
+    <div class="prescription">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Prescription ID</th>
+                    <th>Doctor Name</th>
+                    <th>Patient Name</th>
+                    <th>Prescription</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for pat in patient %}
+         <tr>
+            <td>{{ pat.id }}</td>
+            <td>{{pat.doctor.name}}</td>
+            <td>{{pat.patient.name}}</td>
+            <td>{{pat.prescription}}</td>
+            <td>{{pat.dates}}</td>
+            <td><a href="" class="btn btn-success">Dowload</a></td>
+         </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+    </div>
+{% endblock %}

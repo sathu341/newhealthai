@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Book an Appointment</h1>
+
+        <!-- Display success or error messages -->
+        {% if messages %}
+            <div class="alert alert-info">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form action="{% url 'book_appointment' %}" method="POST">
+            {% csrf_token %}
+            <!-- Doctor Selection (you can replace with dynamic options) -->
+        <div class="form-group">
+                <label for="drid">Doctor</label>
+                <select name="drid" id="drid" class="form-control" required>
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+             <!--Predicted Disease (symptoms) -->
+            <div class="form-group">
+                <label for="predict">Predicted Disease (Symptoms)</label>
+                <input type="text" name="predict" id="predict" vallue="{{predict}}" hidden>
+            </div>
+
+            <!-- Appointment Date -->
+            <div class="form-group">
+                <label for="date">Appointment Date</label>
+                <input type="date" name="date" id="date" class="form-control" required>
+            </div>
+
+            <!-- Appointment Time -->
+            <div class="form-group">
+                <label for="time">Appointment Time</label>
+                <input type="time" name="time" id="time" class="form-control" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

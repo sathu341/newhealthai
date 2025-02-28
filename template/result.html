@@ -1,0 +1,63 @@
+{% extends 'C:\2024project_AI\healthai\template\patient\dashboard.html' %}
+{% load static %}
+   {% block title %} Disease Prediction with AI {% endblock %}
+   {% block content%}
+   <style>
+    .doctor_flex{
+        display:flex;
+        gap:10px;
+
+    }
+    .doctor_flex li{
+        display:flex;
+        padding:10px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius:6px;
+        border:3px solid lightgrey;
+    }
+    .doctor_flex li img{
+        width:100%;
+        height:170px;
+        border-radius:50%;
+    }
+    .btn{
+        width:auto;
+        padding:10px;
+        text-align:center;
+        background:linear-gradient(90deg,lightgreen,green);
+        text-decoration: none;
+        margin:10px;
+    }
+   </style>
+    <div class="container mt-4">
+        <h1>Prediction Result</h1>
+        <p><strong>Patient Name:</strong> {{ patient_name }}</p>
+        <p><strong>Predicted Disease:</strong> {{ predicted_disease }}</p>
+        <p><strong>Department to Consult:</strong> {{ department }}</p>
+        <h2>Available Doctors</h2>
+        {% if doctor %}
+            <ul class="doctor_flex">
+                {% for doctor in doctor %}
+                    <li>
+                       
+                        {% if doctor.photo %}
+                            <img src="{{ doctor.photo.url }}" alt="Photo of Dr. {{ doctor.name }}" style="width: 100px; height: auto;">
+                        {% endif %}
+                        <strong>Dr. {{ doctor.name }}</strong><br>
+                        Registration No: {{ doctor.register_no }}<br>
+                        Email: {{ doctor.email }}<br>
+                        Phone: {{ doctor.phone }}<br>
+                        <a class="btn" href="/book/?drid={{doctor.id}}&predict={{predicted_disease}}">Appointment Booking</a>
+                        <hr>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No doctors found for this department.</p>
+        {% endif %}
+       
+    </div>
+
+    {% endblock %}
