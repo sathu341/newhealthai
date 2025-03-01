@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Test Reports</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+        h2 { color: #333; }
+        .report-container { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 8px; background: #f9f9f9; }
+        .report-container p { margin: 5px 0; }
+        .download-link { color: blue; text-decoration: none; font-weight: bold; }
+        .download-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <h2>Blood Test Reports for {{ patient.name }}</h2>
+
+    {% if reports %}
+        {% for report in reports %}
+            <div class="report-container">
+                <p><strong>Test Names:</strong> {{ report.test_names|join:", " }}</p>
+                <p><strong>Doctor:</strong> Dr. {{ report.doctor.name }}</p>
+                <p><strong>Result Date:</strong> {{ report.result_date }}</p>
+
+                {% if report.testresult %}
+                    <p><a href="{{ report.testresult.url }}" target="_blank" class="download-link">Download Report</a></p>
+                {% else %}
+                    <p><em>No report file available</em></p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No blood test reports found for this patient.</p>
+    {% endif %}
+
+</body>
+</html>

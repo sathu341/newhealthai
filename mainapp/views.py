@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import Patient, MedicalRecord, Report,Department,Doctor,Booking,BloodTest,Medicalrepotupload,BloodTestReport
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -81,7 +81,9 @@ def login_view(request):
 def dashboard_view(request):
     user_name = request.session.get('user_name', 'Guest')  # Retrieve custom session data
     userid=request.session.get('userid')
-    return render(request, 'patient/dashboard.html', {'user_name': user_name,'userid':userid})
+    patient=get_object_or_404(Patient,id=userid)
+    book=Booking.objects.filter(patient=patient)
+    return render(request, 'patient/dashboard.html', {'user_name': user_name,'userid':userid,"bookings":book})
 
 def logout_view(request):
     logout(request)  # Clear the session and log the user out
@@ -375,6 +377,47 @@ def viewprescription(request):
     patient=Prescription.objects.select_related('doctor','patient').filter(patient=Patient.objects.get(id=patientid))
     return render(request,'patient/viewprescription.html',{'patient':patient})
 
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+
+
+def generate_prescription_pdf(request, prescription_id):
+    patient=get_object_or_404(Patient,id=prescription_id)
+
+    prescription = Prescription.objects.select_related('patient','doctor').filter(patient=patient).first()
+    if prescription:
+        # Create a response object for PDF download
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="Prescription_{prescription.patient.name}.pdf"'
+
+        # Create PDF canvas
+        pdf = canvas.Canvas(response, pagesize=letter)
+   
+        pdf.setTitle(f"Prescription for {prescription.patient.name}")
+
+        # Add content to PDF
+        pdf.drawString(100, 750, f"Patient Name: {prescription.patient.name}")
+        pdf.drawString(100, 730, f"Doctor: Dr. {prescription.doctor.name}")
+        pdf.drawString(100, 710, f"Date: {prescription.dates.strftime('%Y-%m-%d')}")
+        
+        # Add prescription details with line wrapping
+        pdf.drawString(100, 680, "Prescription:")
+        text_object = pdf.beginText(100, 660)
+        text_object.setFont("Helvetica", 12)
+
+        for line in prescription.prescription.split('\n'):
+            text_object.textLine(line)
+
+        pdf.drawText(text_object)
+
+        # Save and return the response
+        pdf.showPage()
+        pdf.save()
+        return response
+    else:
+        return redirect('/dashboard/')
+
 def upload_medical_report(request):
     # Check if the request is a POST
     if request.method == 'POST':
@@ -432,4 +475,10 @@ def medical_report_list(request):
     }
     print(reports)
     return render(request, 'doctor/medical_report_list.html', context)
+
+from .models import BloodTestReport
+def blood_test_reports_by_patient(request, patient_id):
+    patient = get_object_or_404(Patient, id=patient_id)
+    reports = BloodTestReport.objects.filter(patient=patient)
+    return render(request, 'patient/blood_test_reports.html', {'patient': patient, 'reports': reports})
 

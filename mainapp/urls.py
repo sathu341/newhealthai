@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . views import generate_prescription_pdf,blood_test_reports_by_patient
 urlpatterns = [
     path("",views.index),
     path('add_patient/', views.add_patient, name='add_patient'),
@@ -19,6 +20,8 @@ urlpatterns = [
     path('add_medical_report/',views.upload_medical_report,name="upload_medical_report"),
     path('medical-reports/', views.medical_report_list, name='medical_report_list'),
     path('doctorpredict/',views.doctorpredict,name="doctorpredict"),
-    path('bloodresult/',views.BloodTestReport,name="BloodTestReport")
+    path('bloodresult/',views.BloodTestReport,name="BloodTestReport"),
+    path('pdf/<int:prescription_id>/', generate_prescription_pdf, name='generate_prescription_pdf'),
+    path('blood-tests/<int:patient_id>/', blood_test_reports_by_patient, name='blood_tests_by_patient'),
 
 ]
